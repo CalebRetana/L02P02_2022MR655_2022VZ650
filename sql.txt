@@ -1,0 +1,238 @@
+USE [master]
+GO
+/** Object:  Database [LibreriaEntityDb]    Script Date: 1/4/2025 08:35:20 **/
+CREATE DATABASE [LibreriaEntityDb]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'LibreriaEntityDb', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\LibreriaEntityDb.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'LibreriaEntityDb_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\LibreriaEntityDb_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT, LEDGER = OFF
+GO
+ALTER DATABASE [LibreriaEntityDb] SET COMPATIBILITY_LEVEL = 160
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [LibreriaEntityDb].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [LibreriaEntityDb] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET  ENABLE_BROKER 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET RECOVERY FULL 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET  MULTI_USER 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [LibreriaEntityDb] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [LibreriaEntityDb] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'LibreriaEntityDb', N'ON'
+GO
+ALTER DATABASE [LibreriaEntityDb] SET QUERY_STORE = ON
+GO
+ALTER DATABASE [LibreriaEntityDb] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 1000, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
+GO
+USE [LibreriaEntityDb]
+GO
+/** Object:  Table [dbo].[autores]    Script Date: 1/4/2025 08:35:20 **/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[autores](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[autor] [varchar](200) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/** Object:  Table [dbo].[categorias]    Script Date: 1/4/2025 08:35:20 **/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[categorias](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[categoria] [varchar](200) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/** Object:  Table [dbo].[clientes]    Script Date: 1/4/2025 08:35:20 **/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[clientes](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[nombre] [nvarchar](255) NULL,
+	[apellido] [nvarchar](255) NULL,
+	[email] [nvarchar](255) NULL,
+	[direccion] [nvarchar](255) NULL,
+	[created_at] [datetime] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/** Object:  Table [dbo].[comentarios_libros]    Script Date: 1/4/2025 08:35:20 **/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[comentarios_libros](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[id_libro] [int] NULL,
+	[comentarios] [varchar](max) NULL,
+	[usuario] [varchar](50) NULL,
+	[created_at] [datetime] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/** Object:  Table [dbo].[libros]    Script Date: 1/4/2025 08:35:20 **/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[libros](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[nombre] [nvarchar](255) NULL,
+	[descripcion] [nvarchar](255) NULL,
+	[url_imagen] [nvarchar](255) NULL,
+	[id_autor] [int] NULL,
+	[id_categoria] [int] NULL,
+	[precio] [decimal](18, 2) NULL,
+	[estado] [char](1) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/** Object:  Table [dbo].[pedido_detalle]    Script Date: 1/4/2025 08:35:20 **/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[pedido_detalle](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[id_pedido] [int] NULL,
+	[id_libro] [int] NULL,
+	[created_at] [datetime] NULL,
+	[Cantidad] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/** Object:  Table [dbo].[pedido_encabezado]    Script Date: 1/4/2025 08:35:20 **/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[pedido_encabezado](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[id_cliente] [int] NULL,
+	[cantidad_libros] [int] NULL,
+	[total] [decimal](18, 2) NULL,
+	[estado] [varchar](50) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[clientes] ADD  DEFAULT (getdate()) FOR [created_at]
+GO
+ALTER TABLE [dbo].[comentarios_libros] ADD  DEFAULT (getdate()) FOR [created_at]
+GO
+ALTER TABLE [dbo].[pedido_detalle] ADD  DEFAULT (getdate()) FOR [created_at]
+GO
+ALTER TABLE [dbo].[pedido_detalle] ADD  DEFAULT ((1)) FOR [Cantidad]
+GO
+ALTER TABLE [dbo].[pedido_encabezado] ADD  DEFAULT ('Pendiente') FOR [estado]
+GO
+ALTER TABLE [dbo].[comentarios_libros]  WITH CHECK ADD FOREIGN KEY([id_libro])
+REFERENCES [dbo].[libros] ([id])
+GO
+ALTER TABLE [dbo].[libros]  WITH CHECK ADD FOREIGN KEY([id_autor])
+REFERENCES [dbo].[autores] ([id])
+GO
+ALTER TABLE [dbo].[libros]  WITH CHECK ADD FOREIGN KEY([id_categoria])
+REFERENCES [dbo].[categorias] ([id])
+GO
+ALTER TABLE [dbo].[pedido_detalle]  WITH CHECK ADD FOREIGN KEY([id_libro])
+REFERENCES [dbo].[libros] ([id])
+GO
+ALTER TABLE [dbo].[pedido_detalle]  WITH CHECK ADD FOREIGN KEY([id_pedido])
+REFERENCES [dbo].[pedido_encabezado] ([id])
+GO
+ALTER TABLE [dbo].[pedido_encabezado]  WITH CHECK ADD  CONSTRAINT [FK_pedido_enid_cl_4316F928] FOREIGN KEY([id_cliente])
+REFERENCES [dbo].[clientes] ([id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[pedido_encabezado] CHECK CONSTRAINT [FK_pedido_enid_cl_4316F928]
+GO
+USE [master]
+GO
+ALTER DATABASE [LibreriaEntityDb] SET  READ_WRITE 
+GO
