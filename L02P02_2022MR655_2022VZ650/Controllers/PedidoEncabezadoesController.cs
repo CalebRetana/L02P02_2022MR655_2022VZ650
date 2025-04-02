@@ -19,11 +19,37 @@ namespace L02P02_2022MR655_2022VZ650.Controllers
         }
 
         // GET: PedidoEncabezadoes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int id)
         {
-            var libreriaContext = _context.PedidoEncabezados.Include(p => p.IdClienteNavigation);
-            return View(await libreriaContext.ToListAsync());
+            // Obtener el pedido por ID
+            var pedido = await _context.PedidoEncabezados
+                .Include(p => p.PedidoDetalles)
+                .ThenInclude(d => d.IdLibroNavigation)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (pedido == null)
+            {
+                return NotFound("Pedido no encontrado.");
+            }
+
+            // Cargar todos los libros disponibles en la librería
+            var libros = await _context.Libros.ToListAsync();
+
+            // Verificar si la lista de libros es nula
+            if (libros == null || !libros.Any())
+            {
+                libros = new List<Libro>();
+            }
+
+            // Asignar los libros al ViewBag para que la vista pueda accederlos
+            ViewBag.Libros = libros;
+            ViewBag.PedidoId = id;
+
+            return View(pedido);
         }
+
+
+
 
         // GET: PedidoEncabezadoes/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -154,6 +180,72 @@ namespace L02P02_2022MR655_2022VZ650.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+
+
+        // Cerrar venta
+        [HttpPost]
+        public async Task<IActionResult> CerrarVenta([FromBody] PedidoEncabezadoViewModel pedidoData)
+        {
+            var pedido = await _context.PedidoEncabezados
+                .Include(p => p.PedidoDetalles)
+                .ThenInclude(d => d.IdLibroNavigation)
+                .Include(p => p.IdClienteNavigation)
+                .FirstOrDefaultAsync(p => p.Id == pedidoData.Id);
+
+            if (pedido == null)
+            {
+                return Json(new { success = false, message = "Pedido no encontrado." });
+            }
+
+            // Actualizar el estado del pedido a "C" (CERRADA)
+            pedido.Estado = "C";
+            pedido.Total = pedidoData.Total;
+
+            // Eliminar detalles previos para evitar duplicados
+            _context.PedidoDetalles.RemoveRange(pedido.PedidoDetalles);
+
+            // Guardar los detalles del pedido en la base de datos
+            foreach (var item in pedidoData.Carrito)
+            {
+                var detalle = new PedidoDetalle
+                {
+                    IdPedido = pedido.Id,
+                    IdLibro = item.libroId,
+                    Cantidad = item.cantidad,  // Cantidad correctamente mapeada
+                    CreatedAt = DateTime.Now
+                };
+                _context.PedidoDetalles.Add(detalle);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Venta cerrada exitosamente.", pedidoId = pedido.Id });
+        }
+
+
+
+        // Vista de cierre de venta
+        public async Task<IActionResult> CierreVenta(int id)
+        {
+            var pedido = await _context.PedidoEncabezados
+                .Include(p => p.PedidoDetalles)
+                .ThenInclude(d => d.IdLibroNavigation) // Asegurarnos de cargar el libro
+                .Include(p => p.IdClienteNavigation)    // Asegurarnos de cargar el cliente
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (pedido == null)
+            {
+                return NotFound("Pedido no encontrado.");
+            }
+
+            return View(pedido);
+        }
+
+
+
+
+
 
         private bool PedidoEncabezadoExists(int id)
         {

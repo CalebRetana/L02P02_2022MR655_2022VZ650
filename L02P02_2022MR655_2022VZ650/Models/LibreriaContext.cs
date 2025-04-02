@@ -16,29 +16,21 @@ public partial class LibreriaContext : DbContext
     }
 
     public virtual DbSet<Autore> Autores { get; set; }
-
     public virtual DbSet<Categoria> Categorias { get; set; }
-
     public virtual DbSet<Cliente> Clientes { get; set; }
-
     public virtual DbSet<ComentariosLibro> ComentariosLibros { get; set; }
-
     public virtual DbSet<Libro> Libros { get; set; }
-
     public virtual DbSet<PedidoDetalle> PedidoDetalles { get; set; }
-
     public virtual DbSet<PedidoEncabezado> PedidoEncabezados { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=CALEC;Database=LibreriaEntityDb;Trusted_Connection=True;TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-2NRPP4K;Database=LibreriaEntityDb;Trusted_Connection=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Autore>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__autores__3213E83F8911CC3E");
-
             entity.ToTable("autores");
 
             entity.Property(e => e.Id).HasColumnName("id");
@@ -51,7 +43,6 @@ public partial class LibreriaContext : DbContext
         modelBuilder.Entity<Categoria>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__categori__3213E83FF57B2B14");
-
             entity.ToTable("categorias");
 
             entity.Property(e => e.Id).HasColumnName("id");
@@ -64,7 +55,6 @@ public partial class LibreriaContext : DbContext
         modelBuilder.Entity<Cliente>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__clientes__3213E83F93F299FF");
-
             entity.ToTable("clientes");
 
             entity.Property(e => e.Id).HasColumnName("id");
@@ -89,7 +79,6 @@ public partial class LibreriaContext : DbContext
         modelBuilder.Entity<ComentariosLibro>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__comentar__3213E83FE844A9F2");
-
             entity.ToTable("comentarios_libros");
 
             entity.Property(e => e.Id).HasColumnName("id");
@@ -114,7 +103,6 @@ public partial class LibreriaContext : DbContext
         modelBuilder.Entity<Libro>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__libros__3213E83F097CE66D");
-
             entity.ToTable("libros");
 
             entity.Property(e => e.Id).HasColumnName("id");
@@ -150,7 +138,6 @@ public partial class LibreriaContext : DbContext
         modelBuilder.Entity<PedidoDetalle>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__pedido_d__3213E83F17A1D77B");
-
             entity.ToTable("pedido_detalle");
 
             entity.Property(e => e.Id).HasColumnName("id");
@@ -173,7 +160,6 @@ public partial class LibreriaContext : DbContext
         modelBuilder.Entity<PedidoEncabezado>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__pedido_e__3213E83F1B362EBF");
-
             entity.ToTable("pedido_encabezado");
 
             entity.Property(e => e.Id).HasColumnName("id");

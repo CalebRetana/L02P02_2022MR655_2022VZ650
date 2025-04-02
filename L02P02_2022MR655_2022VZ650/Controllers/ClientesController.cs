@@ -57,12 +57,28 @@ namespace L02P02_2022MR655_2022VZ650.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(cliente);
+                // Guardar el cliente
+                _context.Clientes.Add(cliente);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                // Crear el pedido encabezado con estado "P"
+                var pedidoEncabezado = new PedidoEncabezado
+                {
+                    IdCliente = cliente.Id,
+                    CantidadLibros = 0,
+                    Total = 0,
+                    Estado = "P"  // Estado inicial en proceso
+                };
+                _context.PedidoEncabezados.Add(pedidoEncabezado);
+                await _context.SaveChangesAsync();
+
+                // Redirigir al listado de libros pasando el ID del pedido creado
+                return RedirectToAction("Index", "PedidoEncabezadoes", new { id = pedidoEncabezado.Id });
             }
             return View(cliente);
         }
+
+
 
         // GET: Clientes/Edit/5
         public async Task<IActionResult> Edit(int? id)

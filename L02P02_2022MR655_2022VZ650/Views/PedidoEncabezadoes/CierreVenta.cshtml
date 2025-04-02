@@ -1,0 +1,44 @@
+﻿@model L02P02_2022MR655_2022VZ650.Models.PedidoEncabezado
+
+<div class="container mt-4">
+    <h2 class="text-primary">Formulario de Cierre de Venta</h2>
+
+    <div class="card p-3">
+        <h4>Datos del Cliente</h4>
+        <p><strong>Nombre:</strong> @Model.IdClienteNavigation.Nombre @Model.IdClienteNavigation.Apellido</p>
+        <p><strong>Email:</strong> @Model.IdClienteNavigation.Email</p>
+        <p><strong>Dirección:</strong> @Model.IdClienteNavigation.Direccion</p>
+        <hr>
+        <h4>Detalle de Libros</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Libro</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var detalle in Model.PedidoDetalles)
+                {
+                    <tr>
+                        <td>@detalle.IdLibroNavigation.Nombre</td>
+                        <td>@detalle.Cantidad</td>
+                        <td>$@detalle.IdLibroNavigation.Precio</td>
+                        <td>$@(detalle.IdLibroNavigation.Precio * detalle.Cantidad)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <h4 class="text-primary">Total a Pagar: $@Model.Total</h4>
+        <button class="btn btn-success" onclick="reiniciarCiclo()">Cerrar Venta</button>
+    </div>
+</div>
+
+<script>
+    function reiniciarCiclo() {
+        alert("Venta cerrada exitosamente.");
+        window.location.href = '/Clientes/Create';
+    }
+</script>
